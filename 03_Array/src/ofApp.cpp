@@ -22,15 +22,26 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
-
+    float time = ofGetElapsedTimef();
+    cam.setPosition(1000.0 * cos(time), 0, 1000.0 * sin(time));
+    
+    cam.lookAt(ofVec3f(0, 0, 0));
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
     cam.begin();
     
+    int hue = ofGetFrameNum() % 255; //hueには0~255の値が入る
+    ofSetColor(ofColor::fromHsb(hue, 255, 255));
     for(int i = 0; i < 100; i++){
         box[i].draw();
+        
+        if(i != 0){
+            ofVec3f pos1 = box[i-1].getPosition(); //ボックス1の座標を取得
+            ofVec3f pos2 = box[i].getPosition(); //ボックス2の座標を取得
+            ofLine(pos1, pos2); //1と2を線でつなぐ
+        }
     }
     
     cam.end();
